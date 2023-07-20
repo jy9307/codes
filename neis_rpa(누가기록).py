@@ -1,0 +1,72 @@
+from pywinauto import Application
+from pywinauto import findwindows
+import pyautogui
+import pandas as pd
+import random
+import pyperclip
+
+def content_add(worksheet) :
+    #행추가
+    neis['행추가'].click()
+    neis['행추가'].click()    
+    
+    #-----------1행--------------
+    #내용 변수에 할당
+    rand_num = random.randrange(0,len(worksheet)-1)
+    date = int(worksheet.iloc[rand_num,0])
+    content = worksheet.iloc[rand_num,1]
+
+    #내용 입력
+    pyperclip.copy(content)
+    pyautogui.click(1095,527)
+    pyautogui.hotkey('ctrl','v')
+
+    pyperclip.copy(date)    
+    pyautogui.click(901,527)
+    pyautogui.sleep(1)
+    pyautogui.hotkey('ctrl','v')
+
+    #-----------2행--------------
+    #내용 변수에 할당
+    rand_num = random.randrange(0,len(worksheet)-1)
+    date = int(worksheet.iloc[rand_num,0])
+    content = worksheet.iloc[rand_num,1]
+
+    #내용 입력
+    pyperclip.copy(content)
+    pyautogui.click(1095,579)
+    pyautogui.hotkey('ctrl','v')
+
+    pyperclip.copy(date)    
+    pyautogui.click(901,579)
+    pyautogui.sleep(1)
+    pyautogui.hotkey('ctrl','v')
+
+
+    #---------저장
+    pyautogui.click(1764,350)
+    neis['확인3'].click()
+    neis['확인'].click()
+
+
+    
+
+worksheet = pd.read_csv('누가기록.csv', encoding='cp949')
+
+app = Application(backend='uia').connect(title_re =".*Microsoft.*Edge.*")
+neis = app["4세대 지능형 나이스 시스템 외 페이지 1개 - 프로필 1 - Microsoft​ Edge', Chrome_WidgetWin_1"]
+
+# neis.print_control_identifiers()
+end_num = int(input("끝번호 입력하세요"))
+
+for i in range(23,27) :    
+    neis[f'Hyperlink{i}'].invoke()
+    content_add(worksheet)
+
+# down = pyautogui.locateOnScreen('down.png', confidence=0.8)
+# pyautogui.moveTo(down)
+# pyautogui.click(clicks=10)
+
+# for i in range(14,end_num+4) :
+#     neis[f'Hyperlink{i}'].invoke()
+#     content_add(worksheet)
